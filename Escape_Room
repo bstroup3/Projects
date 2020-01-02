@@ -1,0 +1,696 @@
+import time, threading
+#Start of Game
+def guiEscaperoom():
+ print(' _______________________________ ')
+ print('| ___ ___ __ __ ___ __ |')
+ print('| |_ |__ | |_| |__| |__ |')
+ print('| |__ __| |__ | | | |__ |')
+ print('| ___ ___ ___ ___ ___ |')
+ print('| |__| | | | | | | | |')
+ print('| | \ |___| |___| | | | |')
+ print('|_______________________________|')
+
+guiEscaperoom()
+print('Welcome to The Escape Room!')
+Name = input('Enter your name: ')
+print('Hello, %s. This escape room is a game where your decisions will determine whether you will get out or not.' %(Name))
+time.sleep(3)
+print("Choose Wisely")
+time.sleep(1)
+Decision1 = input('Would you like to begin?: ')
+def lowerChar(char):
+ if ord('A') <= ord(char)<= ord('Z'):
+ char = ord(char) + 32
+ return chr(char)
+ else:
+ return char
+
+
+def lowerString(string):
+ result = ''
+ for i in range (0, len(string)):
+ lowerChar(string[i]) 
+ result = result + lowerChar(string[i])
+ return result
+
+Decision1 = lowerString(Decision1)
+
+
+if Decision1[0] == 'y':
+ print('Great! Lets get started!\n')
+else:
+ Decision2 = input('Are you sure?: ')
+ Decision2 = lowerString(Decision2)
+ if Decision2[0] == 'y':
+ print('Try again later')
+ exit()
+ else:
+ print('Great! Lets get started!')
+time.sleep(3)
+#Step 1
+print('You find yourself in a dark room with only one door\n')
+time.sleep(3)
+print('You walk over to the door and find an electronic keypad with the numbers 1,2,3,4,5 on it.\n')
+time.sleep(3)
+print('There is a sticky note next to the door that reads:')
+print("\"The combination uses all of these numbers only once\"\n")
+
+combination = ''
+while combination != '23145':
+ combination = input('Enter the Password: ')
+ counter = 0
+ combination1 = ['2','3','1','4','5']
+ for i in range(0,len(combination)):
+ if combination[counter] != combination1[counter]:
+ counter += 1
+ print('Password Incorrect. Incorrect at the %s digit' %(counter))
+ continue
+ else: 
+ counter += 1
+ continue
+print('Password Accepted\n')
+time.sleep(3)
+
+#Step 2
+print('You walk down a hallway with a steel door at the end of it.\n')
+time.sleep(3)
+print('There is a terminal next to the door that reads: \nTo open the door, Name an eight letter word that has kst in the middle, in the beginning, and at the end.\n')
+time.sleep(5)
+riddle1 = ''
+counter = 5
+while riddle1 != 'inkstand':
+ riddle1 = input('Take a guess. You have %d tries:' %((counter))) 
+ if counter == 2:
+ print('Password Incorrect')
+ time.sleep(2)
+ print('Read two words before the \'beginning\' word, and three words before the \'middle\' and \'end\' words. Piece them together')
+ time.sleep(2)
+ counter -= 1 
+ continue
+ if counter == 4:
+ print('Password Incorrect')
+ time.sleep(2)
+ print('Look very carefully at the words')
+ time.sleep(2)
+ counter -= 1
+ continue
+ if riddle1 == 'inkstand':
+ print('Password Accepted\n')
+ break
+ elif counter == 1:
+ print('You Lose! Try Again!')
+ exit()
+ elif counter <= 5:
+ print('Password Incorrect')
+ time.sleep(2)
+ counter -= 1
+time.sleep(3)
+#Step 3
+print('The steel door opened\n ')
+time.sleep(3)
+print('The next room has a table with different colored blocks on it\n ')
+time.sleep(3)
+print('there is 7 holes in the wall with a number 1-7 above each one \n')
+time.sleep(3)
+print('A note on the table says: \"Put the blocks in reverse order of the rainbow\"')
+
+rainbow = []
+counter = 0
+counter1 = 1
+while rainbow != ['v','i','b','g','y','o','r']:
+ while counter < 7:
+ rainbow1 = 0
+ rainbow1 = input('Enter the %d box: ' %(counter + 1))
+ rainbow1 = lowerString(rainbow1)
+ rainbow.append(rainbow1[0])
+ counter += 1
+ if rainbow == ['v','i','b','g','y','o','r']:
+ print('Password Accepted \n')
+ break
+ elif rainbow != ['v','i','b','g','y','o','r']:
+ print('Password Incorrect')
+ time.sleep(2)
+ print ('You have %d tries left' %(3 - counter1))
+ counter += 1 
+ time.sleep(2)
+ continue
+ elif counter == 3:
+ print('You lose! Try Again!')
+ exit()
+time.sleep(3)
+print('Congratulations on making it this far')
+time.sleep(2)
+print('Starting now you will be timed for each test')
+time.sleep(2)
+print('Good luck\n')
+time.sleep(2)
+print('The next door opened')
+#Step 4
+time.sleep(2)
+print('You enter an empty room\nA voice speaks through a loud speaker saying\nYou will hear 3 riddles and will have 20 seconds to answer each one.')
+time.sleep(3)
+midpoint = input('Do you wish to continue?: ')
+midpoint = lowerString(midpoint)
+if midpoint[0] == 'y':
+ print('Excellent! Lets keep going!')
+else:
+ print('You have chosen to not continue')
+ time.sleep(1)
+ print('You Lose!')
+ exit()
+time.sleep(3)
+
+
+riddle = ''
+riddle0 = 'falsestring1234'
+riddle1 = ['a stamp','trouble','fire']
+counter = 0
+counter1 = 0
+
+def trigger():
+ counter2 = []
+ global counter1
+ global counter
+ holder = 1
+ while riddle != riddle0:
+ time.sleep(1)
+ counter2.append(holder)
+ holder += 1
+ if verifyStamp(riddle,riddle1[counter1]) == True:
+ counter1 = counter1 + 1 
+ print('\nThats %s down\n%s to go'%(counter,3 - counter))
+ break
+ if len(counter2)== 20:
+ print('\nYour time is up\nYou lose!')
+ exit()
+ else:
+ continue
+
+thread = threading.Thread(target=trigger)
+thread1 = threading.Thread(target=trigger)
+thread2 = threading.Thread(target=trigger)
+thread.daemon = True
+
+def verifyStamp(string,string1):
+ for i in range (0,len(string)):
+ if string[i] == string1[0]:
+ if string[i:i+len(string1)] == string1[:]:
+ flag = True
+ return flag
+ break
+ else:
+ flag = False
+ continue
+ else:
+ flag = False
+ continue
+ return flag
+
+def Stampriddle():
+ global riddle
+ global riddle1
+ global counter
+ #flag = False #this is the problem with the return flag
+ while riddle != riddle1[0]:
+ riddle = input('What can stay in a corner, but travel the world?: ')
+ riddle = lowerString(riddle)
+ flag = verifyStamp(riddle,riddle1[0])
+ if flag == True:
+ print('Correct')
+ counter +=1
+ break
+ else:
+ print('Incorrect, Try again')
+ continue
+
+
+def Troubleriddle():
+ global riddle
+ global riddle1
+ global counter
+ #flag = False #this is the problem with the return flag
+ while riddle != riddle1[1]:
+ riddle = input('What\'s easy to get into, But hard to get out of?: ')
+ riddle = lowerString(riddle)
+ flag = verifyStamp(riddle,riddle1[1])
+ if flag == True:
+ print('Correct')
+ counter +=1
+ break
+ else:
+ print('Incorrect, Try again')
+ continue
+
+
+def Fireriddle():
+ global riddle
+ global riddle1
+ global counter
+ #flag = False #this is the problem with the return flag
+ while riddle != riddle1[2]:
+ riddle = input('Feed me and I live, yet give me a drink and I die. What am I?: ')
+ riddle = lowerString(riddle)
+ flag = verifyStamp(riddle,riddle1[2])
+ if flag == True:
+ print('Correct')
+ counter +=1
+ break
+ else:
+ print('Incorrect, Try again')
+ continue
+
+
+thread.start()
+Stampriddle()
+thread.join()
+
+ready = input('Are you ready?: ')
+ready = lowerString(ready)
+if ready[0] == 'y':
+ print('Lets continue')
+else:
+ print('Too bad!')
+
+thread1.start()
+Troubleriddle()
+thread1.join()
+
+ready = input('Are you ready?: ')
+ready = lowerString(ready)
+if ready[0] == 'y':
+ print('Lets continue')
+else:
+ print('Too bad!')
+
+thread2.start()
+Fireriddle()
+thread2.join()
+time.sleep(2)
+print('Congratulations! You have one room left!\n')
+#step 5/Prelim
+time.sleep(2)
+print('You enter the next room\nIt looks like a bedroom')
+time.sleep(2)
+print('The loudspeaker says \"There is a key somewhere in this room, if you find it and open the next door, You will win\"')
+time.sleep(2)
+print('You have as much time as you need to complete this next room')
+print('Good luck')
+#step 5
+def Listprint(Array):
+ for i in range (0, len(Array)):
+ print(Array[i])
+
+def inventory_index_box(List):
+ for i in range(0,len(List)):
+ if List[i] == box:
+ return i
+
+def inventory_index_safe(List):
+ for i in range(0,len(List)):
+ if List[i] == safe:
+ return i
+
+def inventory_finder(String):
+ for i in range (0, len(inventory)):
+ if inventory[i] == String:
+ return i
+ else:
+ continue
+ return None
+
+#step 5
+
+print('There is a bed, nightstand, closet, dresser, and door in the bed room')
+inventory = []
+box = ['a box','tennis shoes']
+safe = ['a safe','key']
+nightstand_drawer = ['gum','book','chapstick','a pencil']
+nightstand_behind = ['tissue','phone charger','a pen','a nickel']
+bed_under = [box[0], 'sock','lego piece']
+closet_shelf = ['baseball glove','hat','a backpack']
+closet_back = ['poster',safe[0],'sticker']
+closet_floor = ['shoes','soccer ball','duffle bag']
+dresser_top = ['picture frame','water bottle','snow globe']
+dresser_drawer = ['t-shirt','book','computer','computer charger']
+door = ['knob']
+
+
+while door[0] != 'key':
+ choice = input('Where do you choose to go?\nA = nightstand\nB = bed\nC = closet\nD = dresser\nE = door\nF = See Inventory\n:')
+ choice = lowerString(choice)
+ if choice == 'a':
+ while True:
+ choice2 = input('Would you like to look behind the nightstand or in the drawer? (Behind, Drawer or neither): ')
+ choice2 = lowerString(choice2)
+ if choice2 == 'drawer':
+ time.sleep(1)
+ Listprint(nightstand_drawer)
+ picker = input('Would you like to take any of these items?(Yes or No):')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?:')
+ picker2 = lowerString(picker2)
+ if picker2 == 'gum':
+ inventory.append(nightstand_drawer[0])
+ print('gum added to your inventory')
+ break
+ elif picker2 == 'book':
+ inventory.append(nightstand_drawer[1])
+ print('book added to your inventory')
+ break
+ elif picker2 == 'chapstick':
+ inventory.append(nightstand_drawer[2])
+ print('chapstick added to your inventory')
+ break
+ elif picker2 == 'a pencil':
+ inventory.append(nightstand_drawer[3])
+ print('pencil added to your inventory')
+ break
+ else:
+ print('That is not an avalible item')
+ time.sleep(2)
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ elif choice2 == 'behind':
+ time.sleep(1)
+ Listprint(nightstand_behind)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'tissue':
+ inventory.append(nightstand_behind[0])
+ print('Tissue added to your inventory')
+ break
+ elif picker2 == 'phone charger':
+ inventory.append(nightstand_behind[1])
+ print('Phone charger added to inventory')
+ break
+ elif picker2 == 'a pen':
+ inventory.append(nightstand_behind[2])
+ print('Pen was added to your inventory')
+ break
+ elif picker2 == 'a nickel' or 'nickel':
+ inventory.append(nightstand_behind[3])
+ print('A nickel was added to your inventory')
+ break
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ else:
+ print('You chose neither')
+ time.sleep(2)
+ break
+ elif choice == 'b':
+ time.sleep(1)
+ Listprint(bed_under)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'a box':
+ inventory.append(box)
+ print('box added to your inventory')
+ picker3 = input('Would you like to open the box?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ box.pop(0)
+ print('%s were found inside'%(box[0]))
+ inventory.pop(inventory_index_box(inventory))
+ inventory.append('tennis shoes')
+ print('tennis shoes were added to your inventory')
+ break
+ else:
+ break
+ elif picker2 == 'sock':
+ inventory.append(bed_under[1])
+ print('sock has been added to your inventory')
+ break
+ elif picker2 == 'lego piece':
+ inventory.append(bed_under[2])
+ print('Lego piece has been added to your inventory')
+ break
+ else:
+ print('That is not an avalible item')
+ continue
+ picker4 = input('Would you like more of these items?: ')
+ picker4 = lowerString(picker4)
+ if picker4[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ elif choice == 'c':
+ while True:
+ choice2 = input('Would you like to look on the closet shelf, floor, back, or none?(Shelf, Back, Floor, None): ')
+ choice2 = lowerString(choice2)
+ if choice2 == 'shelf':
+ Listprint(closet_shelf)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'baseball glove':
+ inventory.append(closet_shelf[0])
+ print('baseball glove added to your inventory')
+ break
+ elif picker2 == 'hat':
+ inventory.append(closet_shelf[1])
+ print('hat added to inventory')
+ break
+ elif picker2 == 'a backpack' or 'backpack':
+ inventory.append(closet_shelf[2])
+ print('Backpack was added to your inventory')
+ break
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ elif choice2 == 'floor':
+ Listprint(closet_floor)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'shoes':
+ inventory.append(closet_floor[0])
+ print('shoes added to your inventory')
+ break
+ elif picker2 == 'soccer ball':
+ inventory.append(closet_floor[1])
+ print('soccer ball added to inventory')
+ break
+ elif picker2 == 'dufflebag' or 'duffle bag':
+ inventory.append(closet_floor[2])
+ print('duffle bag was added to your inventory')
+ break
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ elif choice2 == 'back':
+ Listprint(closet_back)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'poster':
+ inventory.append(closet_back[0])
+ print('shoes added to your inventory')
+ break
+ elif picker2 == 'safe' or 'a safe':
+ inventory.append(safe)
+ print('safe added to inventory')
+ picker3 = input('Would you like to open the safe?: ')
+ if picker3[0] == 'y':
+ picker4 = ''
+ while picker4 != '23145':
+ picker4 = input('What was the 5 digit code to the first step of this game?: ')
+ if picker4 == '23145':
+ print('Password Correct')
+ break
+ else:
+ print('Password Incorrect')
+ continue
+ print('The safe opened')
+ time.sleep(2)
+ safe.pop(0)
+ inventory.pop(inventory_index_safe(inventory))
+ inventory.append('key')
+ print('A key was found inside and was added to your inventory')
+ else:
+ break
+ break
+ elif picker2 == 'sticker' or 'a sticker':
+ inventory.append(closet_floor[2])
+ print('sticker was added to your inventory')
+ break
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break 
+ else:
+ continue
+ else:
+ print('You chose none')
+ time.sleep(2)
+ break
+ elif choice == 'd':
+ while True:
+ choice2 = input('Would you like to look on top of the dresser or in the drawer? (Top, Drawer, Neither): ')
+ choice2 = lowerString(choice2)
+ if choice2 == 'top':
+ Listprint(dresser_top)
+ picker = input('Would you like any of these items?(Yes or No):')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ picker2 == input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 'picture frame' or 'picture':
+ inventory.append(dresser_top[0])
+ print('picture frame added to your inventory')
+ break
+ elif picker2 == 'water bottle':
+ inventory.append(dresser_top[1])
+ print('water bottle added to inventory')
+ break
+ elif picker2 == 'snow globe':
+ inventory.append(dresser_top[2])
+ print('snow globe was added to your inventory')
+ break
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ elif choice2 == 'drawer':
+ Listprint(dresser_drawer)
+ picker = input('Would you like any of these items?(Yes or No): ')
+ picker = lowerString(picker)
+ if picker[0] == 'y':
+ while True:
+ picker2 = input('Which one?: ')
+ picker2 = lowerString(picker2)
+ if picker2 == 't-shirt':
+ inventory.append(dresser_drawer[0])
+ print('t-shirt added to your inventory')
+ break
+ elif picker2 == 'book':
+ inventory.append(dresser_drawer[1])
+ print('book added to inventory')
+ break
+ elif picker2 == 'computer':
+ inventory.append(dresser_drawer[2])
+ print('computer was added to your inventory')
+ break
+ elif picker2 == 'computer charger':
+ inventory.append(dresser_drawer[3])
+ print('computer charger added to your inventory')
+ else:
+ print('That is not an availible item')
+ continue
+ picker3 = input('Would you like to take another item?: ')
+ picker3 = lowerString(picker3)
+ if picker3[0] == 'y':
+ continue
+ else:
+ break
+ else:
+ continue
+ else:
+ break
+ elif choice == 'f':
+ print('Inventory\n-------------')
+ Listprint(inventory)
+ print('-------------')
+ while True:
+ waiter = input('Do you wish to proceed?:')
+ waiter = lowerString(waiter)
+ if waiter[0] == 'y':
+ break
+ else:
+ time.sleep(3)
+ continue
+ elif choice == 'e':
+ print('The door has a key hole')
+ while True:
+ option = input('Would you like to put anything in it?(Yes or No): ')
+ option = lowerString(option)
+ if option[0] == 'y':
+ option2 = input('What do you want to put in the key hole?: ')
+ option2 = lowerString(option2)
+ option3 = inventory_finder(option2)
+ if option3 != None:
+ if inventory[option3] == 'key':
+ door.pop(0)
+ door.append(inventory[option3])
+ print('The key fit the lock and the door opened')
+ break
+ else:
+ print('You tried to put %s into the key hole but it didn\'t fit'%(inventory[option3]))
+ continue
+ else:
+ print('You do not have that item in your inventory')
+ continue
+ else:
+ break
+print('Congratulations %s! You have just beat my escape room!'% (Name))
