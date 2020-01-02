@@ -20,18 +20,18 @@ time.sleep(1)
 Decision1 = input('Would you like to begin?: ')
 def lowerChar(char):
  if ord('A') <= ord(char)<= ord('Z'):
- char = ord(char) + 32
- return chr(char)
+  char = ord(char) + 32
+  return chr(char)
  else:
- return char
+  return char
 
 
 def lowerString(string):
  result = ''
  for i in range (0, len(string)):
- lowerChar(string[i]) 
- result = result + lowerChar(string[i])
- return result
+  lowerChar(string[i]) 
+  result = result + lowerChar(string[i])
+  return result
 
 Decision1 = lowerString(Decision1)
 
